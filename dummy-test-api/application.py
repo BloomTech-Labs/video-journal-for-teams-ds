@@ -23,16 +23,16 @@ import os
 # Get secret keys from .env file:
 load_dotenv()
 
-# Dummy API placeholder data:
-import dummy_data
+# Fake placeholder data:
+from .fake_data import *
 
-DUMMY_INPUT_USER_PERFORMANCE = dummy_data.DUMMY_INPUT_USER_PERFORMANCE
-DUMMY_INPUT_PROMPT_TOP = dummy_data.DUMMY_INPUT_PROMPT_TOP
-DUMMY_INPUT_VIDEO_ANALYZE = dummy_data.DUMMY_INPUT_VIDEO_ANALYZE
-
-DUMMY_OUTPUT_USER_PERFORMANCE = dummy_data.DUMMY_OUTPUT_USER_PERFORMANCE
-DUMMY_OUTPUT_PROMPT_TOP = dummy_data.DUMMY_OUTPUT_PROMPT_TOP
-DUMMY_OUTPUT_VIDEO_ANALYZE = dummy_data.DUMMY_OUTPUT_VIDEO_ANALYZE
+# DUMMY_INPUT_USER_PERFORMANCE = dummy_data.DUMMY_INPUT_USER_PERFORMANCE
+# DUMMY_INPUT_PROMPT_TOP = dummy_data.DUMMY_INPUT_PROMPT_TOP
+# DUMMY_INPUT_VIDEO_ANALYZE = dummy_data.DUMMY_INPUT_VIDEO_ANALYZE
+#
+# DUMMY_OUTPUT_USER_PERFORMANCE = dummy_data.DUMMY_OUTPUT_USER_PERFORMANCE
+# DUMMY_OUTPUT_PROMPT_TOP = dummy_data.DUMMY_OUTPUT_PROMPT_TOP
+# DUMMY_OUTPUT_VIDEO_ANALYZE = dummy_data.DUMMY_OUTPUT_VIDEO_ANALYZE
 
 
 # Initialize our flask app (API):
@@ -113,17 +113,18 @@ def prompt_top_responses():
 @application.route('/video_analyze', methods=['POST'])
 def video_analyze():
     """
-    "/video_analyze" API endpoint: Takes in a JSON with the user_id, prompt_id,
-    video_id, video_s3_key and video_s3_filename (of the raw video file),
-    analyzes that video file, and adds the resulting analysis to that user's
-    info in our database. Returns string "True" if received.
+    "/video_analyze" API endpoint: Takes in a JSON with the video_id,
+    user_id, prompt_id, video_id, video_s3_key and video_s3_filename (of
+    the raw video file), analyzes that video file, and adds the resulting
+    analysis to that user's info in our database. Returns string "True" if
+    received.
     """
     # Check to make sure we received a valid JSON with the request:
     if not request.json:
         return jsonify({"error": "no request received"})
 
     # Get incoming request with the image data:
-    input_video_s3_key = request.get_json(force=True)['video_s3_key']
+    input_video_id = request.get_json(force=True)['video_id']
 
     # Model analysis goes here:
     # None (dummy model)
